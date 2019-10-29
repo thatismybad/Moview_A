@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Movie {
 
+    private String movieId;
     private String title;
     private int year;
     private Date releaseDate;
@@ -21,7 +22,11 @@ public class Movie {
     private List<Rating> ratings;
     private MovieType type;
 
-    public Movie(String title, int year, Date releaseDate, int runtime, List<Genre> genreList, String director, String writer, List<Actor> actors, String plot, String country, String language, Image poster, List<Rating> ratings, MovieType type) {
+    public Movie() {
+    }
+
+    public Movie(String movieId, String title, int year, Date releaseDate, int runtime, List<Genre> genreList, String director, String writer, List<Actor> actors, String plot, String country, String language, Image poster, List<Rating> ratings, MovieType type) {
+        this.movieId = movieId;
         this.title = title;
         this.year = year;
         this.releaseDate = releaseDate;
@@ -36,6 +41,14 @@ public class Movie {
         this.poster = poster;
         this.ratings = ratings;
         this.type = type;
+    }
+
+    public String getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(String movieId) {
+        this.movieId = movieId;
     }
 
     public String getTitle() {

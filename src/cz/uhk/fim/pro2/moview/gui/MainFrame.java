@@ -1,8 +1,9 @@
 package cz.uhk.fim.pro2.moview.gui;
 
 import cz.uhk.fim.pro2.moview.model.*;
-import cz.uhk.fim.pro2.moview.utils.DataHandler;
+import cz.uhk.fim.pro2.moview.utils.DateHandler;
 import cz.uhk.fim.pro2.moview.utils.ImageHandler;
+import cz.uhk.fim.pro2.moview.utils.MovieParser;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,6 +28,12 @@ public class MainFrame extends JFrame {
     }
 
     private void initTestData() {
+
+        boolean notCallAgain = true;
+        for (Movie m : MovieParser.parseMovieSearch("star wars")) {
+            System.out.println(MovieParser.parseMovieDetail(m.getMovieId()));
+        }
+
         List<Genre> genres = new ArrayList<>(4);
         genres.add(new Genre("Sci-Fi"));
         genres.add(new Genre("Action"));
@@ -44,9 +51,10 @@ public class MainFrame extends JFrame {
         ratings.add(new Rating("Metacritic", "90/100"));
 
         Movie m1 = new Movie(
+                "asdasd",
                 "Star Wars - ep. 4",
                 1977,
-                DataHandler.getDateFromString("25 May 1977"),
+                DateHandler.getDateFromString("25 May 1977"),
                 121,
                 genres,
                 "George Lucas",
@@ -60,6 +68,6 @@ public class MainFrame extends JFrame {
                 MovieType.MOVIE
         );
 
-        System.out.println(m1);
+//        System.out.println(m1);
     }
 }
