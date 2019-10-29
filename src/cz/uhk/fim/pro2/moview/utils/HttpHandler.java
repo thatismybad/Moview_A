@@ -8,7 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class HttpHandler {
-    private static final String API_KEY = "ba0b2bda";
+    private static final String API_KEY = "";
     private static final String API_URL = String.format("http://www.omdbapi.com/?apikey=%s", API_KEY);
 
     public static String searchForMovies(String query) {
