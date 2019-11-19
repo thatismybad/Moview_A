@@ -7,24 +7,75 @@ import cz.uhk.fim.pro2.moview.utils.MovieParser;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainFrame extends JFrame {
 
+    private JPanel rootPanel;
+    private JTextField txtInput;
+    private JLabel lblInputYear;
+    private JLabel lblInputTitle;
+    private JButton btnSearch;
+    private JCheckBox checkByYear;
+    private JTextField txtYear;
+    private JButton btnAdd;
+    private JButton btnSkip;
+    private JLabel lblTitle;
+    private JLabel lblYear;
+    private JLabel lblType;
+    private JLabel lblPoster;
+
+    private List<Movie> movies;
+
     public MainFrame() {
         initFrame();
         initTestData();
+        initUi();
     }
 
     private void initFrame() {
         setTitle("Moview");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int) (screenSize.width * 0.75), (int) (screenSize.height * 0.75));
+        setContentPane(rootPanel);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
         setResizable(false);
+    }
+
+    private void initUi() {
+        checkByYear.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                lblInputYear.setVisible(checkByYear.isSelected());
+                txtYear.setVisible(checkByYear.isSelected());
+            }
+        });
+
+        btnSearch.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String searchTitle = txtInput.getText().trim();
+                if (!searchTitle.isEmpty()) {
+                    movies = MovieParser.parseMovieSearch(searchTitle);
+                }
+            }
+        });
+    }
+
+    private void setDataToUi() {
+    }
+
+    private void addMovieToFavorites(Movie movie) {
+
+    }
+
+    private void skipMovie(Movie movie) {
+
     }
 
     private void initTestData() {
@@ -32,6 +83,7 @@ public class MainFrame extends JFrame {
         boolean notCallAgain = true;
         for (Movie m : MovieParser.parseMovieSearch("star wars")) {
             System.out.println(MovieParser.parseMovieDetail(m.getMovieId()));
+            break;
         }
 
         List<Genre> genres = new ArrayList<>(4);
