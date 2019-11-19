@@ -67,17 +67,6 @@ public class MainFrame extends JFrame {
         });
     }
 
-    private void setDataToUi() {
-    }
-
-    private void addMovieToFavorites(Movie movie) {
-
-    }
-
-    private void skipMovie(Movie movie) {
-
-    }
-
     private void initTestData() {
 
         boolean notCallAgain = true;
