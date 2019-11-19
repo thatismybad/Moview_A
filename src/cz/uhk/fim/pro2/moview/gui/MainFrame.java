@@ -2,6 +2,7 @@ package cz.uhk.fim.pro2.moview.gui;
 
 import cz.uhk.fim.pro2.moview.model.*;
 import cz.uhk.fim.pro2.moview.utils.DateHandler;
+import cz.uhk.fim.pro2.moview.utils.FileUtils;
 import cz.uhk.fim.pro2.moview.utils.ImageHandler;
 import cz.uhk.fim.pro2.moview.utils.MovieParser;
 
@@ -9,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +34,6 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
         initFrame();
-        initTestData();
         initUi();
     }
 
@@ -62,9 +63,67 @@ public class MainFrame extends JFrame {
                 String searchTitle = txtInput.getText().trim();
                 if (!searchTitle.isEmpty()) {
                     movies = MovieParser.parseMovieSearch(searchTitle);
+                    setDataToUi();
                 }
             }
         });
+
+        btnAdd.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (!movies.isEmpty()) {
+                    addMovie(movies.get(0));
+                }
+                setDataToUi();
+            }
+        });
+
+        btnSkip.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (!movies.isEmpty()) {
+                    skipMovie(movies.get(0));
+                }
+                setDataToUi();
+            }
+        });
+    }
+
+    private void addMovie(Movie m) {
+        System.out.println(m);
+        try {
+            FileUtils.saveStringToFile(m.getMovieId());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        movies.remove(m);
+    }
+
+    private void skipMovie(Movie m) {
+        System.out.println(m);
+        movies.remove(m);
+    }
+
+    private void setDataToUi() {
+        if (!movies.isEmpty()) {
+            Movie m = movies.get(0);
+            lblTitle.setText(m.getTitle());
+            lblYear.setText(m.getYear());
+            lblType.setText(m.getType().getType());
+            lblPoster.setIcon(new ImageIcon(m.getPoster()));
+        } else {
+//            lblTitle.setVisible(false);
+//            lblYear.setVisible(false);
+//            lblType.setVisible(false);
+//            lblPoster.setVisible(false);
+            setVisibility(false, lblTitle, lblYear, lblType, lblPoster);
+        }
+    }
+
+    private void setVisibility(boolean shouldBeVisible, JComponent... components) {
+        for(JComponent c : components) {
+            c.setVisible(shouldBeVisible);
+        }
     }
 
     private void initTestData() {
@@ -94,7 +153,7 @@ public class MainFrame extends JFrame {
         Movie m1 = new Movie(
                 "asdasd",
                 "Star Wars - ep. 4",
-                1977,
+                "1977",
                 DateHandler.getDateFromString("25 May 1977"),
                 121,
                 genres,

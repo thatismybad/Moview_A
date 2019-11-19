@@ -8,7 +8,7 @@ public class Movie {
 
     private String movieId;
     private String title;
-    private int year;
+    private String year;
     private Date releaseDate;
     private int runtime;
     private List<Genre> genreList;
@@ -25,7 +25,7 @@ public class Movie {
     public Movie() {
     }
 
-    public Movie(String movieId, String title, int year, Date releaseDate, int runtime, List<Genre> genreList, String director, String writer, List<Actor> actors, String plot, String country, String language, Image poster, List<Rating> ratings, MovieType type) {
+    public Movie(String movieId, String title, String year, Date releaseDate, int runtime, List<Genre> genreList, String director, String writer, List<Actor> actors, String plot, String country, String language, Image poster, List<Rating> ratings, MovieType type) {
         this.movieId = movieId;
         this.title = title;
         this.year = year;
@@ -59,11 +59,11 @@ public class Movie {
         this.title = title;
     }
 
-    public int getYear() {
+    public String getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(String year) {
         this.year = year;
     }
 

@@ -23,7 +23,7 @@ public class MovieParser {
             Movie movie = new Movie();
 
             movie.setTitle(movieObject.getString("Title"));
-            movie.setYear(Integer.parseInt(movieObject.getString("Year")));
+            movie.setYear(movieObject.getString("Year"));
             movie.setPoster(ImageHandler.getImageFromUrl(movieObject.getString("Poster")));
             movie.setType(MovieType.fromString(movieObject.getString("Type")));
             movie.setMovieId(movieObject.getString("imdbID"));
@@ -43,7 +43,7 @@ public class MovieParser {
 
         String movieId = rootObject.getString("imdbID");
         String title = rootObject.getString("Title");
-        int year = Integer.parseInt(rootObject.getString("Year"));
+        String year = rootObject.getString("Year");
         Date releaseDate = DateHandler.getDateFromString(rootObject.getString("Released"));
 
         int runtime = Integer.parseInt(rootObject.getString("Runtime").replace(" min", ""));
