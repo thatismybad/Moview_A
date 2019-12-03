@@ -8,13 +8,15 @@ import cz.uhk.fim.pro2.moview.utils.MovieParser;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements ActionListener {
 
     private JPanel rootPanel;
     private JTextField txtInput;
@@ -29,6 +31,8 @@ public class MainFrame extends JFrame {
     private JLabel lblYear;
     private JLabel lblType;
     private JLabel lblPoster;
+
+    private JMenuItem moviesItem;
 
     private List<Movie> movies;
 
@@ -48,7 +52,44 @@ public class MainFrame extends JFrame {
         setResizable(false);
     }
 
-    private void initUi() {
+    private void initUi(){
+        JMenuBar menuBar = new JMenuBar();
+        JMenu mainMenu, moviesSubmenu, genresMenu, yearsMenu;
+        mainMenu = new JMenu("Menu");
+
+        moviesItem = new JMenuItem("Seznam filmů");
+        moviesItem.addActionListener(this);
+
+        moviesSubmenu = new JMenu("Seznam filmů podle");
+        genresMenu = new JMenu("žánru");
+        yearsMenu = new JMenu("roku");
+
+        String[] genres = { "Akční", "Sci-Fi", "Horor", "Drama" };
+        String[] years = { "1977", "1985", "1990", "1993", "2000", "2005", "2017", "2020" };
+
+        mainMenu.add(moviesItem);
+        mainMenu.add(moviesSubmenu);
+
+        moviesSubmenu.add(genresMenu);
+        moviesSubmenu.add(yearsMenu);
+
+        for(String s : genres) {
+            JMenuItem item = new JMenuItem(s);
+            item.addActionListener(this);
+            genresMenu.add(item);
+        }
+
+        for(String s : years) {
+            JMenuItem item = new JMenuItem(s);
+            item.addActionListener(this);
+            yearsMenu.add(item);
+        }
+
+        menuBar.add(mainMenu);
+
+        setJMenuBar(menuBar);
+
+
         checkByYear.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -93,6 +134,7 @@ public class MainFrame extends JFrame {
         System.out.println(m);
         try {
             FileUtils.saveStringToFile(m.getMovieId());
+            System.out.println(FileUtils.readStringFromFile("movies.txt"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -169,5 +211,17 @@ public class MainFrame extends JFrame {
         );
 
 //        System.out.println(m1);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("On Action Performed");
+        if (e.getSource() == moviesItem) {
+            new MovieListFrame("Seznam filmů");
+        } else {
+            JMenuItem item = (JMenuItem) e.getSource();
+
+            new MovieListFrame(item.getText());
+        }
     }
 }
