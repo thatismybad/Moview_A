@@ -14,6 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainFrame extends JFrame implements ActionListener {
@@ -32,7 +33,7 @@ public class MainFrame extends JFrame implements ActionListener {
     private JLabel lblType;
     private JLabel lblPoster;
 
-    private JMenuItem moviesItem;
+    private List<MenuItem> menuItems;
 
     private List<Movie> movies;
 
@@ -53,12 +54,25 @@ public class MainFrame extends JFrame implements ActionListener {
     }
 
     private void initUi(){
+
+        try {
+            HashMap<String, String> dataMap = FileUtils.decomposeData(FileUtils.readStringFromFile(FileUtils.TYPE_GENRES));
+
+            dataMap.toString();
+
+            System.out.println(FileUtils.composeData(dataMap));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        menuItems = new ArrayList<>();
         JMenuBar menuBar = new JMenuBar();
         JMenu mainMenu, moviesSubmenu, genresMenu, yearsMenu;
         mainMenu = new JMenu("Menu");
 
-        moviesItem = new JMenuItem("Seznam filmů");
+        JMenuItem moviesItem = new JMenuItem("Seznam filmů");
         moviesItem.addActionListener(this);
+        menuItems.add(new MenuItem("Seznam filmů", null, null, moviesItem));
 
         moviesSubmenu = new JMenu("Seznam filmů podle");
         genresMenu = new JMenu("žánru");
@@ -76,12 +90,26 @@ public class MainFrame extends JFrame implements ActionListener {
         for(String s : genres) {
             JMenuItem item = new JMenuItem(s);
             item.addActionListener(this);
+            menuItems.add(new MenuItem(
+                    String.format("Seznam filmů podle žánru: %s", s),
+                    "genres",
+                    s,
+                    item
+                    )
+            );
             genresMenu.add(item);
         }
 
         for(String s : years) {
             JMenuItem item = new JMenuItem(s);
             item.addActionListener(this);
+            menuItems.add(new MenuItem(
+                            String.format("Seznam filmů podle roku: %s", s),
+                            "years",
+                            s,
+                            item
+                    )
+            );
             yearsMenu.add(item);
         }
 
@@ -133,8 +161,8 @@ public class MainFrame extends JFrame implements ActionListener {
     private void addMovie(Movie m) {
         System.out.println(m);
         try {
-            FileUtils.saveStringToFile(m.getMovieId());
-            System.out.println(FileUtils.readStringFromFile("movies.txt"));
+            FileUtils.saveStringToFile(m.getMovieId(), FileUtils.TYPE_ALL);
+            System.out.println(FileUtils.readStringFromFile(FileUtils.TYPE_ALL));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -215,13 +243,11 @@ public class MainFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("On Action Performed");
-        if (e.getSource() == moviesItem) {
-            new MovieListFrame("Seznam filmů");
-        } else {
-            JMenuItem item = (JMenuItem) e.getSource();
-
-            new MovieListFrame(item.getText());
+        JMenuItem item = (JMenuItem) e.getSource();
+        for(MenuItem menuItem : menuItems) {
+            if (menuItem.getItem().equals(item)) {
+                new MovieListFrame(menuItem);
+            }
         }
     }
 }

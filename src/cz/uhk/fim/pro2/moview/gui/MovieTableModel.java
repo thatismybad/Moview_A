@@ -41,11 +41,11 @@ public class MovieTableModel extends AbstractTableModel {
             case 4:
                 return item.getType();
             case 5:
-                return item.getRatings().get(0).getValue();
+                return item.getRatings().size() > 0 ? item.getRatings().get(0).getValue() : "-";
             case 6:
-                return item.getRatings().get(1).getValue();
+                return item.getRatings().size() > 1 ? item.getRatings().get(1).getValue() : "-";
             case 7:
-                return item.getRatings().get(2).getValue();
+                return item.getRatings().size() > 2 ? item.getRatings().get(2).getValue() : "-";
             default:
                 return "?";
         }

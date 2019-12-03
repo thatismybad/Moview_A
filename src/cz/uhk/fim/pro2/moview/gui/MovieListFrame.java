@@ -12,8 +12,8 @@ import java.util.List;
 
 public class MovieListFrame extends JFrame {
 
-    public MovieListFrame(String parameter) {
-        initFrame(parameter);
+    public MovieListFrame(MenuItem item) {
+        initFrame(item.getName());
         initUiAndData();
     }
 
@@ -21,7 +21,6 @@ public class MovieListFrame extends JFrame {
         setTitle(parameter);
         setSize(640, 480);
         setVisible(true);
-        pack();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
@@ -30,7 +29,7 @@ public class MovieListFrame extends JFrame {
         MovieTableModel model = new MovieTableModel();
         List<Movie> movieList = new ArrayList<>();
         try {
-            for(String s : FileUtils.readStringFromFile("movies.txt").split(";")) {
+            for(String s : FileUtils.readStringFromFile(FileUtils.TYPE_ALL).split(";")) {
                 movieList.add(MovieParser.parseMovieDetail(s));
             }
         } catch (IOException e) {
