@@ -28,9 +28,13 @@ public class FileUtils {
     public static HashMap<String, String> decomposeData(String data) {
         HashMap<String, String> dataMap = new HashMap<>();
         String[] lines = data.split("\n");
-        for(String line : lines) {
-            String[] lineValues = line.split(":");
-            dataMap.put(lineValues[0], lineValues[1]);
+        try {
+            for(String line : lines) {
+                String[] lineValues = line.split(":");
+                dataMap.put(lineValues[0], lineValues[1]);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
         return dataMap;
@@ -51,9 +55,9 @@ public class FileUtils {
             break;
         }
 
-        FileWriter writer = new FileWriter(file, true);
+        FileWriter writer = new FileWriter(file, type == TYPE_ALL);
         BufferedWriter bufferedWriter = new BufferedWriter(writer);
-        bufferedWriter.write(String.format("%s;", data));
+        bufferedWriter.write(String.format("%s%s", data, type == TYPE_ALL ? ";" : "").replaceAll(" ",""));
         bufferedWriter.close();
         writer.close();
     }

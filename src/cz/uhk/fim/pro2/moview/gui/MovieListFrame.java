@@ -6,7 +6,6 @@ import cz.uhk.fim.pro2.moview.utils.MovieParser;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,7 @@ public class MovieListFrame extends JFrame {
 
     public MovieListFrame(MenuItem item) {
         initFrame(item.getName());
-        initUiAndData();
+        initUiAndData(item.getParameter());
     }
 
     private void initFrame(String parameter) {
@@ -24,16 +23,12 @@ public class MovieListFrame extends JFrame {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
-    private void initUiAndData() {
+    private void initUiAndData(String values) {
         JTable table = new JTable();
         MovieTableModel model = new MovieTableModel();
         List<Movie> movieList = new ArrayList<>();
-        try {
-            for(String s : FileUtils.readStringFromFile(FileUtils.TYPE_ALL).split(";")) {
-                movieList.add(MovieParser.parseMovieDetail(s));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        for(String s : FileUtils.decomposeCategory(values)) {
+            movieList.add(MovieParser.parseMovieDetail(s));
         }
         model.setMovieList(movieList);
         table.setModel(model);
